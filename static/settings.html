@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cấu hình AI · Playroom</title>
+<link rel="icon" type="image/png" href="/static/logo.png">
+<link rel="shortcut icon" type="image/png" href="/static/logo.png">
+<link rel="apple-touch-icon" href="/static/logo.png">
+<style>body{max-width:800px;margin:40px auto;padding:0 22px;background:#0d1119;color:#f4f2ef;font:16px/1.7 system-ui}a{color:#d9b880}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}.site-logo{width:32px;height:32px;object-fit:contain}section{background:#151c28;border:1px solid #30394a;border-radius:16px;padding:24px;margin:24px 0}dt{color:#a9b1c1}dd{margin:0 0 14px;overflow-wrap:anywhere}pre{overflow:auto;background:#0d1119;padding:16px;border-radius:8px}#status{color:#d9b880}</style></head>
+<body><div class="topbar"><a href="/">← Chợ Playroom</a><a href="/" title="Trang chủ"><img class="site-logo" src="/static/logo.png" alt="Logo Playroom"></a></div><h1>Cấu hình AI</h1>
+<p>Áp dụng chung cho Playroom, Boyfriend và Girlfriend. Lịch sử và nhân vật vẫn lưu local.</p>
+<section><h2>Kết nối đang cấu hình</h2><p id="status" role="status">Đang đọc cấu hình…</p><dl id="details"></dl></section>
+<section><h2>Một danh sách · Hai kết nối</h2>
+<p>Gemini có hai nhóm riêng trong cùng ô chọn model: <strong>Gemini · Google AI Studio</strong> dùng key Google; <strong>Gemini · APIZ</strong> dùng key APIZ. Grok, GPT, Claude và DeepSeek cũng dùng APIZ. Không cần chuyển provider hay sửa URL mỗi lần.</p>
+<p>Điền hai key một lần trong <code>D:\World\playroom-engine\.env</code>, rồi khởi động lại server. Giữ key Google đã có, thêm key APIZ mới; key gateway cũ không được sử dụng lại; không gửi key qua chat hoặc trình duyệt:</p>
+<pre>GEMINI_API_KEY="key_google_của_bạn"
+APIZ_API_KEY="key_apiz_của_bạn"</pre>
+<p id="provider-keys" role="status"></p>
+<p>Thiếu key nào thì các model thuộc kết nối đó được ghi “chưa có key”. Thử chọn sẽ có hướng dẫn và giữ nguyên model cũ. API key Google không bao giờ được gửi tới APIZ. Lựa chọn áp dụng toàn project, giữ nguyên lịch sử và được lưu qua lần khởi động sau. Không tự đổi model hoặc fallback khi lỗi.</p>
+<p>Grok gồm 4.3, 4.6, 4.7 và dùng reasoning mặc định của nhà cung cấp. GPT/Claude và DeepSeek dùng APIZ. DeepSeek có V4 Pro (<code>deepseek-v4-pro</code>) và V4.1 Flash (<code>deepseek-v4.1-flash</code>), theo mã trong danh mục APIZ. <code>LLM_PROVIDER</code> chỉ còn xác định mặc định khi chưa lưu model; <code>LLM_BASE_URL</code> không thay đổi địa chỉ định tuyến theo model. Xem <a href="https://api.apiz.vn/docs/models/" target="_blank" rel="noopener noreferrer">danh mục APIZ</a>.</p></section>
+<section><h2>Google AI Studio · Nhập key trên máy chạy server</h2>
+<ol><li>Lấy key tại <a href="https://aistudio.google.com/api-keys" target="_blank" rel="noopener noreferrer">Google AI Studio chính thức</a>.</li>
+<li>Mở <code>D:\World\playroom-engine\.env</code>, điền key vào <code>GEMINI_API_KEY</code>. Không gửi key vào chat hoặc nhập trên thiết bị không tin cậy.</li>
+<li>Dừng và khởi động lại server, rồi tải lại trang này. F5 không nạp lại biến môi trường.</li></ol>
+<p>Nhóm Gemini chính thức giữ bốn lựa chọn hiện có. Nhóm Gemini qua APIZ có Gemini 3.8 Flash (Medium), Gemini 3.1 Pro chính thức (<code>gemini-3.1-pro</code>, High), Gemini 3.1 Pro Preview (<code>gemini-3.1-pro-preview</code>, High), Gemini 4 Argon (<code>gemini-4-argon</code>, Low), Gemini 4 Hydrogen (<code>gemini-4-hydrogen</code>, Medium) và Gemini 4 Carbon (<code>gemini-4-carbon</code>, High).</p>
+<p>Lựa chọn Gemini APIZ được lưu bằng ID riêng dạng <code>apiz:&lt;mã_model&gt;</code>; backend chỉ gửi mã model gốc tới API. Bộ đếm token phân biệt hai kết nối. Không tự thay lựa chọn Google cũ hoặc chuyển nhà cung cấp khi lỗi.</p>
+<p>Reasoning theo model: 3.1 Flash-Lite và 3.5 Flash-Lite dùng High; 3.8 Flash dùng Medium; Gemini 4 Argon dùng Low. Backend tự áp dụng cùng model cho cảnh và tracker, không lấy thiết lập reasoning cũ của gateway.</p>
+<p>Gợi ý thử: 3.5 Flash-Lite khi muốn giảm chi phí, 3.1 Flash-Lite khi ưu tiên tiết kiệm nhất. Với cảnh nhiều nhân vật hoặc tâm lý phức tạp, hãy so sánh thực tế với 3.8 Flash trước khi dùng lâu dài. Chưa kiểm chứng chất lượng nhập vai bằng request thật. Xem <a href="https://ai.google.dev/gemini-api/docs/pricing" target="_blank" rel="noopener noreferrer">bảng giá chính thức Google</a>.</p>
+<p>Đây là trang trạng thái chỉ đọc. API key không được gửi xuống trình duyệt. “Đã cấu hình” không có nghĩa key đã được xác thực hay còn credit.</p>
+<p>Chọn nhóm Google thì ngữ cảnh cần thiết được gửi trực tiếp tới Google; chọn nhóm APIZ thì ngữ cảnh được gửi qua APIZ. Lịch sử vẫn lưu local nhưng nội dung cần cho phản hồi sẽ rời máy theo kết nối bạn chọn. Key không được gửi chéo giữa hai nhà cung cấp.</p></section>
+<script>
+fetch('/api/llm/config').then(r=>{if(!r.ok)throw Error();return r.json()}).then(c=>{
+document.getElementById('status').textContent=c.key_configured?'Đã cấu hình key · Chưa kiểm tra bằng API':'Chưa có key hợp lệ trong cấu hình local';
+document.getElementById('provider-keys').textContent=Object.entries(c.providers||{}).map(([name,p])=>`${name==='gemini'?'Google AI Studio':'APIZ'}: ${p.key_configured?'đã điền key':'chưa có key'}`).join(' · ');
+const details=document.getElementById('details');
+for(const [label,value] of [['Provider',c.provider_label||c.provider],['API endpoint',c.api_base_url],['Model điều phối',c.model_arbiter],['Model nhân vật',c.model_roleplay],['Model có thể chọn',(c.model_choices||[]).map(m=>`${m.label} (${m.id})`).join(' · ')],['Reasoning',c.reasoning_effort],['Số request cơ bản/lượt',c.scene_mode ? `${1+Number(c.state_tracker)} (có thể thêm khi sửa cảnh hoặc checkpoint)` : `${1+Number(c.state_tracker)} + ${1+Number(c.ooc_guard)} × số NPC trả lời`]]){
+const term=document.createElement('dt');term.textContent=label;const desc=document.createElement('dd');desc.textContent=value;details.append(term,desc);
+}}).catch(()=>{document.getElementById('status').textContent='Không đọc được cấu hình. Kiểm tra server rồi tải lại.'});
+</script></body></html>

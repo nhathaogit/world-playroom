@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "story_id": "sandbox",
+  "session_mode": "playroom",
+  "runtime_profile": "blueprint_v1_1",
+  "scene_lifecycle": true,
+  "title": "Sandbox",
+  "strict_rules": [
+    "Player tự quyết persona và hành động của mình."
+  ],
+  "world": {},
+  "characters": {},
+  "arcs": {}
+}

@@ -1,0 +1,16 @@
+{
+  "blueprint_version": "boyfriend-blueprint/1.0",
+  "artifact_kind": "design-and-template",
+  "auto_loaded_by_engine": false,
+  "saves_modified": false,
+  "primary_speaker_count": 1,
+  "session_mode": "companion",
+  "future_plot": false,
+  "engine_budget_bytes": {
+    "scene": 100000,
+    "scene repair": 100000,
+    "state tracker": 24000,
+    "checkpoint": 30000
+  },
+  "template_assets_are_placeholders": true
+}

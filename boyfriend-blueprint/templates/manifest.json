@@ -1,0 +1,13 @@
+{
+  "id": "an-minh-demo",
+  "category": "boyfriend",
+  "title": "An Minh",
+  "description": "Một người thích đùa khẽ, nhớ chi tiết nhỏ và không dễ nói điều mình thật sự cần.",
+  "genre": [
+    "Hiện đại",
+    "Đời thường",
+    "Tương lai mở"
+  ],
+  "rating": "16+",
+  "thumbnail": "/static/thumbnails/an-minh-demo.png"
+}

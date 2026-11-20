@@ -1,0 +1,33 @@
+# Personal configuration and generated runtime
+.env
+.env.*
+!.env.example
+llm_settings*
+token_usage*
+room_state.json
+save_refresh.json
+scene_diagnostics*
+memory/
+playrooms/
+avatar/
+static/illustrations/
+static/avatars/
+static/thumbnails/
+*.log
+*.tmp
+*.pyc
+__pycache__/
+.venv/
+node_modules/
+.pytest_cache/
+*.zip
+*.bundle
+*.tar.gz
+*.pem
+*.key
+*.p12
+*.pfx
+.DS_Store
+
+# Neutral schema template required by the character creator
+!boyfriend-blueprint/templates/room_state.json

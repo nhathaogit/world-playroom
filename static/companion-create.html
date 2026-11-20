@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tạo boyfriend · Playroom</title>
+  <link rel="icon" type="image/png" href="/static/logo.png">
+  <link rel="shortcut icon" type="image/png" href="/static/logo.png">
+  <link rel="apple-touch-icon" href="/static/logo.png">
+  <link rel="stylesheet" href="/static/companion-create.css">
+  <script src="/static/companion-create.js" defer></script>
+</head>
+<body>
+<header><a href="/boyfriend">← Chợ Boyfriend</a><a href="/" style="display:inline-flex;align-items:center;gap:8px;text-decoration:none;color:inherit"><img src="/static/logo.png" alt="Logo Playroom" style="width:30px;height:30px;object-fit:contain"><span>PLAYROOM · Local</span></a></header>
+<main>
+  <h1>Tạo một cuộc gặp mới</h1>
+  <p class="intro">Tự viết nhân vật, không cần sửa JSON. Luật chung của blueprint được giữ sẵn; tương lai do cuộc trò chuyện quyết định. Không gọi AI, không tốn token khi tạo.</p>
+  <p id="draft-status" class="hint" role="status">Nội dung chữ được giữ nháp trong trình duyệt này; ảnh cần chọn lại sau khi tải lại trang.</p>
+  <form id="creator">
+    <fieldset>
+      <legend>1. Hồ sơ trên chợ</legend>
+      <div class="grid">
+        <label>Tên nhân vật <input name="name" required maxlength="100" autocomplete="off" placeholder="Ví dụ: Lê Minh"></label>
+        <label>Mã nhân vật <input name="room_id" required maxlength="64" pattern="[a-z0-9]+(-[a-z0-9]+)*" aria-describedby="id-hint" placeholder="le-minh"><span id="id-hint" class="hint">Tự tạo từ tên; có thể đổi. Chữ thường không dấu, số và dấu gạch ngang. Không ghi đè nhân vật cũ.</span></label>
+        <label>Tuổi <input name="age" type="number" required min="18" max="10000" step="1" placeholder="Từ 18 tuổi"></label>
+        <label>Nghề nghiệp / thân phận <input name="occupation" required maxlength="3000" placeholder="Công việc, vai trò trong thế giới"></label>
+        <label>Chiều cao (cm, không bắt buộc) <input name="height_cm" type="number" min="1" max="10000" step="0.1"></label>
+        <label>Cân nặng (kg, không bắt buộc) <input name="weight_kg" type="number" min="1" max="100000" step="0.1"></label>
+      </div>
+      <label>Giới thiệu ngắn <textarea name="description" required maxlength="500" rows="2" placeholder="Điều khiến người chơi muốn bước vào cuộc gặp này"></textarea></label>
+      <div class="grid">
+        <label>Thể loại <input name="genre" maxlength="160" value="Hiện đại, Lãng mạn"><span class="hint">Ngăn cách bằng dấu phẩy.</span></label>
+        <label>Nơi ở <input name="residence" maxlength="3000"></label>
+      </div>
+      <label>Xuất thân <textarea name="origin" required maxlength="3000" rows="2"></textarea></label>
+      <label>Ngoại hình <textarea name="appearance" required maxlength="3000" rows="2"></textarea></label>
+      <label>Ảnh thumbnail / avatar <input id="portrait" type="file" accept="image/png,image/jpeg,image/webp"><span class="hint">PNG, JPEG hoặc WebP; tối đa 2 MB, 16 triệu pixel. Để trống sẽ dùng hình đại diện chung. Không tự sinh ảnh.</span></label>
+      <img id="portrait-preview" class="portrait" src="/static/thumbnails/companion-placeholder.svg" alt="Ảnh xem trước của nhân vật">
+      <button type="button" id="clear-portrait" class="secondary">Bỏ ảnh / dùng ảnh chung</button>
+      <p id="portrait-error" class="error" role="alert"></p>
+    </fieldset>
+    <fieldset>
+      <legend>2. Cá tính và cách trò chuyện</legend>
+      <label>Tính cách <textarea name="personality" required maxlength="3000" placeholder="Cách anh ấy thể hiện bản thân, phản ứng khi vui, khó chịu hoặc lúng túng. Đừng chỉ ghi ‘lạnh lùng, thông minh’."></textarea></label>
+      <label>Giọng nói, xưng hô và câu mẫu <textarea name="voice" required maxlength="3000" placeholder="Nhịp câu, từ hay dùng, cách trêu, cách bất đồng; thêm 2–3 câu minh họa. Câu mẫu không là lịch sử đã xảy ra."></textarea></label>
+      <label>Điều muốn giữ / sợ mất <textarea name="desire" required maxlength="3000" rows="2"></textarea></label>
+      <div class="grid">
+        <label>Điểm yếu, mâu thuẫn riêng <textarea name="flaw" maxlength="3000" rows="3"></textarea></label>
+        <label>Sở thích, thói quen đời thường <textarea name="habits" maxlength="3000" rows="3" placeholder="Mỗi ý một dòng"></textarea></label>
+      </div>
+      <details><summary>Giới hạn hiểu biết và hướng diễn xuất (không bắt buộc)</summary>
+        <p class="hint">Để trống sẽ dùng luật an toàn mặc định, không dùng tính cách của nhân vật mẫu.</p>
+        <label>Biết gì về Player khi mở đầu? <textarea name="opening_knowledge" maxlength="3000" rows="2" placeholder="Điều đã biết; điều chưa biết, không đọc được suy nghĩ kín"></textarea></label>
+        <label>Quyền hạn, năng lực và giới hạn <textarea name="authority" maxlength="3000" rows="2" placeholder="Có thể làm gì thực tế? Không có quyền gì với Player?"></textarea></label>
+        <label>Cách chủ động dẫn chuyện <textarea name="initiative" maxlength="3000" rows="2" placeholder="Tự làm việc nhỏ, bày tỏ ý riêng, trêu hoặc tạo cơ hội đúng nhịp"></textarea></label>
+        <label>Điều kiện thay đổi tính cách <textarea name="change_conditions" maxlength="3000" rows="2" placeholder="Thay đổi qua trải nghiệm; không viết sẵn rằng anh ấy sẽ hối cải hoặc yêu Player"></textarea></label>
+        <label>Hành vi cần tránh để không OOC <textarea name="ooc_guard" maxlength="3000" rows="2" placeholder="Mỗi ý một dòng; ví dụ không dùng tiền giải quyết mọi vấn đề"></textarea></label>
+        <label>Luật riêng bổ sung <textarea name="extra_rules" maxlength="3000" rows="2" placeholder="Mỗi luật một dòng; không ghi đè quyền tự quyết, riêng tư và giới hạn 16+"></textarea></label>
+      </details>
+    </fieldset>
+    <fieldset>
+      <legend>3. Quá khứ và cuộc gặp mở đầu</legend>
+      <label>Quan hệ ban đầu với Player <textarea name="relationship" required maxlength="3000" rows="2" placeholder="Bạn cũ, mới gặp, vợ chồng, người yêu cũ… Không quyết định thay cảm xúc của Player."></textarea></label>
+      <label>Câu chuyện trước khi chat <textarea name="background" required maxlength="3000" placeholder="Chỉ sự kiện đã xảy ra. Không viết lịch trình yêu nhau, chia tay hoặc kết thúc trong tương lai."></textarea></label>
+      <label>Bối cảnh hiển thị khi vào phòng <input name="setting" required maxlength="1200" placeholder="Ví dụ: Hiên quán sách chiều muộn, trời bắt đầu mưa."></label>
+      <label>Tình huống gặp mặt <textarea name="starting_situation" required maxlength="3000" rows="3" placeholder="Anh ấy đang làm gì? Điều gì mở ra cuộc trò chuyện? Không viết hộ phản ứng của Player."></textarea></label>
+      <h2>Tin nhắn đầu tiên</h2>
+      <p class="hint">Dẫn kể ở ngôi thứ ba; thoại chỉ chứa lời nhân vật nói. Có thể xen kẽ nhiều đoạn, kéo mạch tự nhiên, không cần kết bằng câu hỏi lựa chọn.</p>
+      <div id="opening-list"></div>
+      <button type="button" id="add-opening" class="secondary">＋ Thêm đoạn dẫn / thoại</button>
+    </fieldset>
+    <fieldset>
+      <legend>4. Điểm quan hệ và danh xưng</legend>
+      <label>Loại quan hệ khởi đầu <select name="mode"><option value="potential_romance">Loveline tiềm năng</option><option value="friendship">Tình bạn / friendzone</option><option value="rivalry">Đối đầu / đối thủ</option></select></label>
+      <p class="hint">Đây là bộ thuộc tính để đánh giá, không tự xác nhận hai người yêu nhau. Có thể đổi nhãn thuộc tính theo vai trò nhân vật; điểm ban đầu từ 0–100.</p>
+      <div id="metric-list"></div>
+      <button type="button" id="add-metric" class="secondary">＋ Thêm thuộc tính</button>
+      <label>Thuộc tính dùng xét danh xưng <select id="title-metric" aria-describedby="title-hint"></select></label>
+      <p id="title-hint" class="hint">Mỗi danh xưng cần giải thích cảm nhận của NPC, không bắt Player đáp lại. Mốc đầu là 0; các mốc sau tăng dần, tối đa 100.</p>
+      <div id="milestone-list"></div>
+      <button type="button" id="add-milestone" class="secondary">＋ Thêm mốc danh xưng</button>
+    </fieldset>
+    <p class="hint">Persona của Player để trống khi tạo. Người chơi sẽ tự điền tại hồ sơ trước khi bắt đầu. Nội dung 16+, nhân vật và Player đều trưởng thành.</p>
+    <div id="errors" class="error" role="alert" tabindex="-1"></div>
+    <div id="result" role="status"></div>
+    <div class="actions"><button type="button" id="preview-button" class="secondary">Xem trước</button><button type="submit" id="publish">Tạo & đưa lên chợ</button></div>
+  </form>
+  <section id="preview" hidden aria-labelledby="preview-title"><h2 id="preview-title">Xem trước</h2><div id="preview-content"></div></section>
+</main>
+</body>
+</html>

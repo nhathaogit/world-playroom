@@ -1,0 +1,14 @@
+{
+  "room_id": "sandbox",
+  "story_id": "sandbox",
+  "setting": "Một quán cà phê yên tĩnh vào buổi chiều.",
+  "player": {
+    "name": "Player",
+    "persona": "",
+    "avatar": ""
+  },
+  "roster": {},
+  "history": [],
+  "narrative_state": {},
+  "active_character_ids": []
+}
